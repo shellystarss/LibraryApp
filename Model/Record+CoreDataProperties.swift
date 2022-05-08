@@ -9,10 +9,6 @@
 import Foundation
 import CoreData
 
-@objc(Record)
-public class Record: NSManagedObject {
-
-}
 
 extension Record {
 

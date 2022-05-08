@@ -10,34 +10,24 @@ import SwiftUI
 struct Records: View {
     @StateObject var bookVM = BookViewModel()
     @StateObject var recordVM = RecordViewModel()
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Record.borrowDate, ascending: false)]) var records: FetchedResults<Record>
-    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
     
-    func getBookTitle(bookID: UUID) -> String {
-        for book in books {
-            if book.id == bookID{
-                return book.title!
-            }
-        }
-        return ""
-    }
     var body: some View {
         NavigationView {
             VStack {
-                
                 if recordVM.records.isEmpty {
                     Text("No record")
                 } else {
-                    
                     List{
                         ForEach(recordVM.records, id: \.self){ record in
-                            NavigationLink(destination: RecordDetail(selectedRecord: record)) {
+                            NavigationLink(destination: RecordDetail(selectedRecord: record, book: bookVM.getBookInfo(bookID: record.bookID!, recordID: record.id!)).simultaneousGesture(TapGesture().onEnded {
+                                recordVM.selectRecord(record: record)
+                            })
+                            ) {
                                 VStack(alignment: .leading) {
                                     HStack {
                                         Text(record.borrowerName!)
                                         Text(" - ")
-                                        Text(getBookTitle(bookID: record.bookID!))
+                                        Text(bookVM.getBookTitle(bookID: record.bookID!))
                                     }
                                     HStack {
                                         Text(record.borrowDate!, style: .date)
@@ -57,35 +47,21 @@ struct Records: View {
             .toolbar {
                 EditButton()
             }
-            .onAppear{
-                bookVM.fetchAll()
-                recordVM.fetchAll()
-            }
+            
+        }
+        .onAppear{
+            bookVM.fetchAll()
+            recordVM.fetchAll()
         }
         
     }
     
     func deleteRecord(at offsets: IndexSet) {
-        for index in offsets {
-            let record = records[index]
-            moc.delete(record)
-            changeBookStatus(bookID: record.bookID!)
-            try? moc.save()
+        offsets.forEach { index in
+            let record = recordVM.records[index]
+            bookVM.changeBookStatus(bookID: record.bookID!)
+            recordVM.delete(record)
         }
-    }
-    
-    func changeBookStatus(bookID: UUID) {
-        for book in books {
-            if book.id == bookID {
-                book.isBorrowed = false
-                try? moc.save()
-            }
-        }
-    }
-}
-
-struct Borrow_Previews: PreviewProvider {
-    static var previews: some View {
-        Records()
+        recordVM.fetchAll()
     }
 }

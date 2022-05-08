@@ -49,7 +49,7 @@ struct PersistenceController {
     
     func getAllRecords() -> [Record] {
         let request: NSFetchRequest<Record> = Record.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
         
         do {
             return try viewContext.fetch(request)
@@ -66,8 +66,19 @@ struct PersistenceController {
         }
     }
     
-    func deleteObject(object: NSManagedObject) {
-        viewContext.delete(object)
+    func getSelectedRecord(id: UUID) -> Record? {
+        let request: NSFetchRequest<Record> = Record.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+        request.predicate = NSPredicate(format: "id LIKE %@", id as CVarArg)
+        do{
+            return try viewContext.fetch(request).first
+        }catch{
+            return nil
+        }
+    }
+    
+    func deleteRecord(record: Record) {
+        viewContext.delete(record)
         save()
     }
     

@@ -6,6 +6,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="isBorrowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="recordID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="year" optional="YES" attributeType="String"/>
         <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="book" inverseEntity="Record"/>
@@ -19,7 +20,7 @@
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="record" inverseEntity="Book"/>
     </entity>
     <elements>
-        <element name="Book" positionX="-54" positionY="18" width="128" height="163"/>
+        <element name="Book" positionX="-54" positionY="18" width="128" height="164"/>
         <element name="Record" positionX="138.4977416992188" positionY="23.3502197265625" width="128" height="119"/>
     </elements>
 </model>

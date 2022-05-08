@@ -45,8 +45,9 @@ struct BookDetail: View {
                             
                             if (!name.isEmpty) {
                                 recordVM.addRecord(bookID: selectedBook.id!, name: name, selectedBook: selectedBook)
-                                recordVM.fetchAll()
                                 showingAlert = true
+                                recordVM.fetchAll()
+                                
                                 resetForm()
                                 // dismiss()
                             }

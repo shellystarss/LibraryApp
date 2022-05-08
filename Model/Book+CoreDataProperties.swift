@@ -9,10 +9,6 @@
 import Foundation
 import CoreData
 
-@objc(Book)
-public class Book: NSManagedObject {
-
-}
 
 extension Book {
 
@@ -27,6 +23,7 @@ extension Book {
     @NSManaged public var isBorrowed: Bool
     @NSManaged public var title: String?
     @NSManaged public var year: String?
+    @NSManaged public var recordID: UUID?
     @NSManaged public var record: Record?
 
 }
