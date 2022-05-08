@@ -69,7 +69,7 @@ struct PersistenceController {
     func getSelectedRecord(id: UUID) -> Record? {
         let request: NSFetchRequest<Record> = Record.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
-        request.predicate = NSPredicate(format: "id LIKE %@", id as CVarArg)
+        request.predicate = NSPredicate(format: "id == '\(id)'")
         do{
             return try viewContext.fetch(request).first
         }catch{

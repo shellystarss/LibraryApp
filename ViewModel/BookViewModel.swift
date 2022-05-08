@@ -47,6 +47,8 @@ class BookViewModel: ObservableObject {
         for book in self.books {
             if book.id == bookID && book.recordID == recordID {
                 return book
+            } else if book.id == bookID {
+                return book
             }
         }
         return Book()

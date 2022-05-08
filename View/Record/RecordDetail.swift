@@ -26,7 +26,7 @@ struct RecordDetail: View {
                         Spacer()
                         TextField("Borrower name", text: $name)
                             .onAppear{
-                                self.name = selectedRecord.borrowerName!
+                                self.name = recordVM.selectedRecord!.borrowerName!
                             }
                     }
                     HStack {
@@ -36,7 +36,7 @@ struct RecordDetail: View {
                             Text("")
                         }
                         .onAppear{
-                            self.borrowDate = selectedRecord.borrowDate!
+                            self.borrowDate = recordVM.selectedRecord!.borrowDate!
                         }
                         
                     }
@@ -52,7 +52,7 @@ struct RecordDetail: View {
                 Section {
                     Text("Save changes").foregroundColor(.blue).onTapGesture {
                         if (!name.isEmpty ) {
-                            recordVM.updateRecord(name: name, borrowDate: borrowDate, selectedRecord: selectedRecord)
+                            recordVM.updateRecord(name: name, borrowDate: borrowDate, selectedRecord: recordVM.selectedRecord!)
                             self.presentationMode.wrappedValue.dismiss()
                         }
                     }
@@ -85,6 +85,8 @@ struct RecordDetail: View {
             .onAppear{
                 bookVM.fetchAll()
                 recordVM.fetchAll()
+                recordVM.getSelectedRecord(id: selectedRecord.id!)
+                
                 book = bookVM.getBookInfo(bookID: selectedRecord.bookID!, recordID: selectedRecord.id!)
             }
         }
