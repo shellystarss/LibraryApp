@@ -10,7 +10,7 @@ import CoreData
 
 class RecordViewModel: ObservableObject {
     let viewContext = PersistenceController.shared.viewContext
-    @Published var record: Record = Record()
+    
     @Published var records: [Record] = []
     @Published var selectedRecord: Record?
     

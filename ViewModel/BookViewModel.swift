@@ -9,7 +9,7 @@ import Foundation
 
 class BookViewModel: ObservableObject {
     let viewContext = PersistenceController.shared.viewContext
-    @Published var book: Book = Book()
+    
     @Published var books: [Book] = []
     @Published var selectedBook: Book?
     
